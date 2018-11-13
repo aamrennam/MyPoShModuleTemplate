@@ -2,20 +2,20 @@
 .DESCRIPTION
     Generic build template file that triggers .\psake.ps1 containing build definitions
 
-.EXAMPLE 
+.EXAMPLE
     .\build.ps1
 
     Triggers the default task(s) in .\psake.ps1
 
 .EXAMPLE
-    .\build.ps1 build 
+    .\build.ps1 build
 
     Triggers the build task(s) in .\psake.ps1
 #>
 param ($Task = 'Default')
 
 # Grab nuget bits, install modules, set build variables, start build.
-Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+$Null = Get-PackageProvider -Name NuGet -ForceBootstrap
 
 # Install dependant modules for the build process
 if (-not (Get-Module -Name Psake -ListAvailable)) {
