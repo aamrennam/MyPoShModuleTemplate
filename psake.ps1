@@ -124,7 +124,7 @@ Task Clean {
 # Build the module
 Task BuildModule -depends Analyze, Test, Clean {
     if (-not (Test-Path $ModuleOutputDir)) {
-        New-Item -Path $ModuleOutputDir -ItemType Directory > $null
+        $null = New-Item -Path $ModuleOutputDir -ItemType Directory 
     }
 
     Copy-Item -Path (Join-Path -Path $ModulePath -ChildPath *) -Destination $ModuleOutputDir -Recurse
@@ -151,7 +151,7 @@ Task BuildDocs -depends BuildModule {
     }
     # Create markdown help
     # TODO! Implement Update-MarkdownHelp for existing docs.
-    $null = New-MarkdownHelp @HelpParams -Force
+    $null = New-MarkdownHelp @HelpParams -Force 
 
     # Create external help
     $ExternalHelp = Join-Path -Path $ModuleOutputDir -ChildPath $HelpLocale 
@@ -159,7 +159,6 @@ Task BuildDocs -depends BuildModule {
         $null = New-Item -Path $ExternalHelp -ItemType Directory 
     }
     $null = New-ExternalHelp -Path $DocsDir -OutputPath $ExternalHelp -Force
-
 }
 
 Task Build -depends BuildDocs {
