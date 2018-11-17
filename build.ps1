@@ -16,7 +16,7 @@
 param ($Task = 'Default')
 
 # Grab nuget bits, install modules, set build variables, start build.
-Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+$null = Get-PackageProvider -Name NuGet -ForceBootstrap 
 
 # Install dependant modules for the build process
 if (-not (Get-Module -Name Psake -ListAvailable)) {

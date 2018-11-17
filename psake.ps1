@@ -124,7 +124,7 @@ Task Clean {
 # Build the module
 Task BuildModule -depends Analyze, Test, Clean {
     if (-not (Test-Path $ModuleOutputDir)) {
-        New-Item -Path $ModuleOutputDir -ItemType Directory | $null
+        $null = New-Item -Path $ModuleOutputDir -ItemType Directory 
     }
 
     Copy-Item -Path (Join-Path -Path $ModulePath -ChildPath *) -Destination $ModuleOutputDir -Recurse
@@ -138,7 +138,7 @@ Task BuildModule -depends Analyze, Test, Clean {
 # Build the documentation for the module 
 Task BuildDocs -depends BuildModule {
     if (-not (Test-Path $DocsDir)) {
-        New-Item -Path $DocsDir -ItemType Directory | $null
+        $null = New-Item -Path $DocsDir -ItemType Directory
     }
     # Import module with global parameter, else platyps fails
     Import-Module -Name $OutputDir\$ModuleName -Global
@@ -151,15 +151,14 @@ Task BuildDocs -depends BuildModule {
     }
     # Create markdown help
     # TODO! Implement Update-MarkdownHelp for existing docs.
-    New-MarkdownHelp @HelpParams -Force | $null
+    $null = New-MarkdownHelp @HelpParams -Force 
 
     # Create external help
     $ExternalHelp = Join-Path -Path $ModuleOutputDir -ChildPath $HelpLocale 
     if (-not (Test-Path $ExternalHelp)) {
-        New-Item -Path $ExternalHelp -ItemType Directory | $null
+        $null = New-Item -Path $ExternalHelp -ItemType Directory 
     }
-    New-ExternalHelp -Path $DocsDir -OutputPath $ExternalHelp -Force | $null
-
+    $null = New-ExternalHelp -Path $DocsDir -OutputPath $ExternalHelp -Force
 }
 
 Task Build -depends BuildDocs {
